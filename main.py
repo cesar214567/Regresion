@@ -154,9 +154,9 @@ def h(x,w): #creo que esto se reemplazaria en calc_one
 
 
 def model_exec(error, function, x_ds, y_ds, iter, reg, opt=None):
-  loss = error.calc_loss(y_ds,y_pd,function.w, reg)
   start_time = time.time()
   y_pd = function.calc_all(x_ds)
+  loss = error.calc_loss(y_ds,y_pd,function.w, reg)
   i=1
   conv_iter = 0
   conv_reached = False
@@ -174,29 +174,35 @@ def model_exec(error, function, x_ds, y_ds, iter, reg, opt=None):
         time_to_convergence = time.time() - start_time
   return [y_pd, time_to_convergence]
 
-def get_mean(error,x_ds,y_ds,regulador,optimizacion):
+def get_means(error,x_ds,y_ds,regulador,optimizacion):
   sum=0
+  time_sum = 0
   for i in range(5):
     sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
     results = model_exec(error, sine_function, x_ds, y_ds, 10000, regulador, optimizacion)
-    time_to_convergence = results[1]
     prediction = results[0]
+    time_to_convergence = results[1]
     sum+=error.calc_loss(y_ds,prediction,sine_function.w,regulador)
-  return sum/5
+    time_sum += time_to_convergence
+  return [sum/5, time_sum/5]
 
 def means_tester(x_ds,y_ds):
-  file = open("data.txt","w+")
+  file = open("data_errors.txt","w+")
+  file2 = open("data_times.txt","w+")
   for i in ["mse","mae"]:
     error = Error_funct(0.0001, i)
     for j in [0,1,2]:
       for k in [None,'momentum','adagrad','adadelta','adam']:
-        err_MSE_L2_SinOptimizacion = get_mean(error,x_ds,y_ds,j,k)
+        calc_means = get_means(error, x_ds, y_ds, j, k)
+        error_promedio = calc_means[0]
+        tiempo_promedio = calc_means[1]
         information = i+"_L"+str(j)+"_"
         if (k is None):
           information+="None"
         else:
           information+=k
-        file.write("error para "+information+" "+str(err_MSE_L2_SinOptimizacion)+'\n')
+        file.write("error para "+information+" "+str(error_promedio)+'\n')
+        file2.write("tiempo para "+information+" "+str(tiempo_promedio)+'\n')
 
 
 def tester(x_ds,y_ds):
@@ -207,7 +213,6 @@ def tester(x_ds,y_ds):
         sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
         results = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
         prediction = results[0]
-        time_to_convergence = results[1]
         plt.plot(x_ds,y_ds,'*')
         plt.plot(x_ds,prediction)
         if (j==None):
@@ -228,7 +233,6 @@ def tester2(x_ds,y_ds):
         sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
         results = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
         prediction = results[0]
-        time_to_convergence = results[1]
         plt.plot(x_ds,prediction, color=color[j],label=j)
       name = "test2/" + i + "_" + str(k)
       plt.legend()
