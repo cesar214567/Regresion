@@ -1,30 +1,30 @@
-tiempo para mse_L0_None 0.0
-tiempo para mse_L0_momentum 0.0
-tiempo para mse_L0_adagrad 0.0
-tiempo para mse_L0_adadelta 0.0
-tiempo para mse_L0_adam 0.0
-tiempo para mse_L1_None 0.0
-tiempo para mse_L1_momentum 0.0
-tiempo para mse_L1_adagrad 0.0
-tiempo para mse_L1_adadelta 0.0
-tiempo para mse_L1_adam 0.0
-tiempo para mse_L2_None 0.0
-tiempo para mse_L2_momentum 0.0
-tiempo para mse_L2_adagrad 0.0
-tiempo para mse_L2_adadelta 0.0
-tiempo para mse_L2_adam 0.0
-tiempo para mae_L0_None 0.0
-tiempo para mae_L0_momentum 0.0
-tiempo para mae_L0_adagrad 0.0
-tiempo para mae_L0_adadelta 0.0
-tiempo para mae_L0_adam 0.0
-tiempo para mae_L1_None 0.0
-tiempo para mae_L1_momentum 0.0
-tiempo para mae_L1_adagrad 0.0
-tiempo para mae_L1_adadelta 0.0
-tiempo para mae_L1_adam 0.0
-tiempo para mae_L2_None 0.0
-tiempo para mae_L2_momentum 0.0
-tiempo para mae_L2_adagrad 0.0
-tiempo para mae_L2_adadelta 0.0
-tiempo para mae_L2_adam 0.0
+tiempo hasta convergencia para mse_L0_None 0.610047721862793
+tiempo hasta convergencia para mse_L0_momentum 0.6676154136657715
+tiempo hasta convergencia para mse_L0_adagrad 0.7025949001312256
+tiempo hasta convergencia para mse_L0_adadelta 0.6303226470947265
+tiempo hasta convergencia para mse_L0_adam 0.3666666030883789
+tiempo hasta convergencia para mse_L1_None 0.6335219860076904
+tiempo hasta convergencia para mse_L1_momentum 0.6924123764038086
+tiempo hasta convergencia para mse_L1_adagrad 0.7692721843719482
+tiempo hasta convergencia para mse_L1_adadelta 0.6592389583587647
+tiempo hasta convergencia para mse_L1_adam 0.36019158363342285
+tiempo hasta convergencia para mse_L2_None 0.503282117843628
+tiempo hasta convergencia para mse_L2_momentum 0.5497886657714843
+tiempo hasta convergencia para mse_L2_adagrad 0.6103561878204345
+tiempo hasta convergencia para mse_L2_adadelta 0.5036452293395997
+tiempo hasta convergencia para mse_L2_adam 0.11791839599609374
+tiempo hasta convergencia para mae_L0_None 0.0
+tiempo hasta convergencia para mae_L0_momentum 0.0
+tiempo hasta convergencia para mae_L0_adagrad 0.43528456687927247
+tiempo hasta convergencia para mae_L0_adadelta 0.5847339630126953
+tiempo hasta convergencia para mae_L0_adam 0.40321917533874513
+tiempo hasta convergencia para mae_L1_None 0.23447413444519044
+tiempo hasta convergencia para mae_L1_momentum 0.0
+tiempo hasta convergencia para mae_L1_adagrad 0.5139580249786377
+tiempo hasta convergencia para mae_L1_adadelta 0.8558356761932373
+tiempo hasta convergencia para mae_L1_adam 0.6065014362335205
+tiempo hasta convergencia para mae_L2_None 0.2716685771942139
+tiempo hasta convergencia para mae_L2_momentum 0.0
+tiempo hasta convergencia para mae_L2_adagrad 0.42865848541259766
+tiempo hasta convergencia para mae_L2_adadelta 0.5278026580810546
+tiempo hasta convergencia para mae_L2_adam 0.436572265625
