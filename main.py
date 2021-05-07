@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import time
 
 class PolynomialFunct:
   def __init__(self, P, alpha, features, y=0.9):
@@ -153,22 +154,33 @@ def h(x,w): #creo que esto se reemplazaria en calc_one
 
 
 def model_exec(error, function, x_ds, y_ds, iter, reg, opt=None):
-  y_pd = function.calc_all(x_ds)
   loss = error.calc_loss(y_ds,y_pd,function.w, reg)
+  start_time = time.time()
+  y_pd = function.calc_all(x_ds)
   i=1
+  conv_iter = 0
+  conv_reached = False
+  time_to_convergence = 0
   while(i < iter):
+    prev = loss + 1
     grads = error.calc_grad(y_ds,x_ds,y_pd,function, reg)
     function.change_params(grads, opt,i)
     y_pd = function.calc_all(x_ds)
     loss = error.calc_loss(y_ds,y_pd,function.w, reg)
     i+=1
-  return y_pd
+    if(abs(loss-prev) < 0.0001 and not conv_reached):
+        conv_iter = i
+        conv_reached = True
+        time_to_convergence = time.time() - start_time
+  return [y_pd, time_to_convergence]
 
 def get_mean(error,x_ds,y_ds,regulador,optimizacion):
   sum=0
   for i in range(5):
     sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
-    prediction = model_exec(error, sine_function, x_ds, y_ds, 10000, regulador, optimizacion)
+    results = model_exec(error, sine_function, x_ds, y_ds, 10000, regulador, optimizacion)
+    time_to_convergence = results[1]
+    prediction = results[0]
     sum+=error.calc_loss(y_ds,prediction,sine_function.w,regulador)
   return sum/5
 
@@ -193,7 +205,9 @@ def tester(x_ds,y_ds):
     for j in [None,"momentum","adadelta","adagrad","adam"]:
       for k in range(3):
         sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
-        prediction = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
+        results = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
+        prediction = results[0]
+        time_to_convergence = results[1]
         plt.plot(x_ds,y_ds,'*')
         plt.plot(x_ds,prediction)
         if (j==None):
@@ -212,7 +226,9 @@ def tester2(x_ds,y_ds):
       plt.plot(x_ds,y_ds,'*')
       for j in [None,"momentum","adadelta","adagrad","adam"]:
         sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
-        prediction = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
+        results = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
+        prediction = results[0]
+        time_to_convergence = results[1]
         plt.plot(x_ds,prediction, color=color[j],label=j)
       name = "test2/" + i + "_" + str(k)
       plt.legend()
