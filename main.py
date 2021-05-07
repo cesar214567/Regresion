@@ -164,7 +164,27 @@ def model_exec(error, function, x_ds, y_ds, iter, reg, opt=None):
     i+=1
   return y_pd
 
+def get_mean(error,x_ds,y_ds,regulador,optimizacion):
+  sum=0
+  for i in range(5):
+    sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
+    prediction = model_exec(error, sine_function, x_ds, y_ds, 10000, regulador, optimizacion)
+    sum+=error.calc_loss(y_ds,prediction,sine_function.w,regulador)
+  return sum/5
 
+def means_tester(x_ds,y_ds):
+  file = open("data.txt","w+")
+  for i in ["mse","mae"]:
+    error = Error_funct(0.0001, i)
+    for j in [0,1,2]:
+      for k in [None,'momentum','adagrad','adadelta','adam']:
+        err_MSE_L2_SinOptimizacion = get_mean(error,x_ds,y_ds,j,k)
+        information = i+"_L"+str(j)+"_"
+        if (k is None):
+          information+="None"
+        else:
+          information+=k
+        file.write("error para "+information+" "+str(err_MSE_L2_SinOptimizacion)+'\n')
 
 
 def tester(x_ds,y_ds):
@@ -206,25 +226,6 @@ if __name__ == "__main__":
   real_sine = np.array([ np.sin(2*i*np.pi) for i in x_ds])
   y_ds = np.array([ np.sin(2*i*np.pi) + np.random.normal(0, 0.2) for i in x_ds])
   #tester(x_ds,y_ds)
-  tester2(x_ds,y_ds)
+  #tester2(x_ds,y_ds)
+  means_tester(x_ds,y_ds)
   
-  #sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
-  #mse_error = Error_funct(0.0001, "mse")
-  #mae_error = Error_funct(0.0001, "mae")
-
-  # -----------------------TESTS-------------------------
-  #mse_pd = model_exec(mse_error, sine_function, x_ds, y_ds, 10000, 0, "momentum")  #MSE
-  #sine_function = PolynomialFunct(4, 0.7, 1, 0.9)
-  #mae_pd = model_exec(mae_error, sine_function, x_ds, y_ds, 10000, 0, "momentum")  #MAE
-  #sine_function = PolynomialFunct(4, 0.7, 1, 0.9)
-  #mae_pd_adagrad = model_exec(mae_error, sine_function, x_ds, y_ds, 10000, 0, "adam")  #MAE
-  # -----------------------GRAFICOS-------------------------
-  #plt.plot(x_ds, y_ds, '*')
-  #plt.plot(x_ds, real_sine, '*', color='green')
-  # plt.plot(x_ds, mse_pd, color='blue')
-  # plt.plot(x_ds, mae_pd, color='green')
-  #plt.plot(x_ds, mae_pd_adagrad, color='red')
-
-  #plt.show()
-
- # https://heartbeat.fritz.ai/5-regression-loss-functions-all-machine-learners-should-know-4fb140e9d4b0
