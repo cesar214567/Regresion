@@ -161,34 +161,46 @@ def model_exec(error, function, x_ds, y_ds, iter, reg, opt=None):
   conv_iter = 0
   conv_reached = False
   time_to_convergence = 0
+  error_conv = 0
+  iter_to_convergence = 0
   while(i < iter):
-    prev = loss + 1
+    prev = loss
     grads = error.calc_grad(y_ds,x_ds,y_pd,function, reg)
     function.change_params(grads, opt,i)
     y_pd = function.calc_all(x_ds)
     loss = error.calc_loss(y_ds,y_pd,function.w, reg)
     i+=1
-    if(abs(loss-prev) < 0.0001 and not conv_reached):
+    if(abs(loss-prev) < 0.000001 and not conv_reached):
         conv_iter = i
         conv_reached = True
-        time_to_convergence = time.time() - start_time
-  return [y_pd, time_to_convergence]
+        tiempo = time.time() - start_time
+        time_to_convergence = tiempo
+        iter_to_convergence = i
+        error_conv = loss
+  return [y_pd, time_to_convergence, iter_to_convergence, error_conv]
 
 def get_means(error,x_ds,y_ds,regulador,optimizacion):
   sum=0
   time_sum = 0
+  iter_sum = 0
+  error_conv_sum = 0
   for i in range(5):
     sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
     results = model_exec(error, sine_function, x_ds, y_ds, 10000, regulador, optimizacion)
     prediction = results[0]
     time_to_convergence = results[1]
+    iter_to_convergence = results[2]
+    error_at_convergence = results[3]
     sum+=error.calc_loss(y_ds,prediction,sine_function.w,regulador)
     time_sum += time_to_convergence
-  return [sum/5, time_sum/5]
+    iter_sum += iter_to_convergence
+    error_conv_sum += error_at_convergence
+  return [sum/5, time_sum/5, iter_sum/5, error_conv_sum/5]
 
 def means_tester(x_ds,y_ds):
   file = open("data_errors.txt","w+")
   file2 = open("data_times.txt","w+")
+  file3 = open("data_iters.txt","w+")
   for i in ["mse","mae"]:
     error = Error_funct(0.0001, i)
     for j in [0,1,2]:
@@ -196,13 +208,16 @@ def means_tester(x_ds,y_ds):
         calc_means = get_means(error, x_ds, y_ds, j, k)
         error_promedio = calc_means[0]
         tiempo_promedio = calc_means[1]
+        iter_promedio = calc_means[2]
+        error_conv = calc_means[3]
         information = i+"_L"+str(j)+"_"
         if (k is None):
           information+="None"
         else:
           information+=k
-        file.write("error para "+information+" "+str(error_promedio)+'\n')
-        file2.write("tiempo para "+information+" "+str(tiempo_promedio)+'\n')
+        file.write("error para "+information+" "+str(error_promedio)+ "con error convergido a en " + str(error_conv) +'\n')
+        file2.write("tiempo hasta convergencia para "+information+" "+str(tiempo_promedio) + '\n')
+        file3.write("iteraciones hasta convergencia para "+information+" "+str(iter_promedio)+'\n')
 
 
 def tester(x_ds,y_ds):

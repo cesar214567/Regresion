@@ -1,30 +1,30 @@
-error para mse_L0_None 0.018165633722658236
-error para mse_L0_momentum 0.018319499953299588
-error para mse_L0_adagrad 0.01893562421368747
-error para mse_L0_adadelta 0.017555535408167122
-error para mse_L0_adam 0.013518901431622248
-error para mse_L1_None 0.018323168737596606
-error para mse_L1_momentum 0.01826592717582613
-error para mse_L1_adagrad 0.018800914756125643
-error para mse_L1_adadelta 0.017695594059690442
-error para mse_L1_adam 0.0145127925522449
-error para mse_L2_None 0.028533626281530666
-error para mse_L2_momentum 0.028532920285514286
-error para mse_L2_adagrad 0.028581804958773847
-error para mse_L2_adadelta 0.028507359185286706
-error para mse_L2_adam 0.028498040078692
-error para mae_L0_None 0.25871109269047854
-error para mae_L0_momentum 0.23250866563011813
-error para mae_L0_adagrad 0.08121112082109402
-error para mae_L0_adadelta 0.08199009564172853
-error para mae_L0_adam 0.07181811315976541
-error para mae_L1_None 0.2649722729713098
-error para mae_L1_momentum 0.2683140459704029
-error para mae_L1_adagrad 0.08107824292986995
-error para mae_L1_adadelta 0.07984962107548028
-error para mae_L1_adam 0.07929974493834473
-error para mae_L2_None 0.2676672547603071
-error para mae_L2_momentum 0.24817330656945483
-error para mae_L2_adagrad 0.09136814624903337
-error para mae_L2_adadelta 0.0935229128117313
-error para mae_L2_adam 0.1069502599388924
+error para mse_L0_None 0.03462245905375107con error convergido a en 0.037141030711864795
+error para mse_L0_momentum 0.034571459715987164con error convergido a en 0.03706895720465072
+error para mse_L0_adagrad 0.03532732760664469con error convergido a en 0.03772725667937812
+error para mse_L0_adadelta 0.03353338272716187con error convergido a en 0.03670086025422402
+error para mse_L0_adam 0.02819002218738887con error convergido a en 0.028580786047831874
+error para mse_L1_None 0.03457912263399564con error convergido a en 0.03709580082946546
+error para mse_L1_momentum 0.03466996348533477con error convergido a en 0.03721391838402073
+error para mse_L1_adagrad 0.03556015913297396con error convergido a en 0.03791585246800431
+error para mse_L1_adadelta 0.033586136347966956con error convergido a en 0.036778544874753925
+error para mse_L1_adam 0.03522285621115541con error convergido a en 0.028637421621437
+error para mse_L2_None 0.04546858013057794con error convergido a en 0.04651803941672508
+error para mse_L2_momentum 0.04546149457423311con error convergido a en 0.046461608483721176
+error para mse_L2_adagrad 0.045533711722872995con error convergido a en 0.04679181934941159
+error para mse_L2_adadelta 0.04542315322072071con error convergido a en 0.04622769227083075
+error para mse_L2_adam 0.050975295799638366con error convergido a en 0.0504273329018872
+error para mae_L0_None 0.25522553480571303con error convergido a en 0.0
+error para mae_L0_momentum 0.22504643486954246con error convergido a en 0.0
+error para mae_L0_adagrad 0.09808421950004595con error convergido a en 0.11096771703947925
+error para mae_L0_adadelta 0.09823287780102893con error convergido a en 0.10997101765065094
+error para mae_L0_adam 0.09825735692184952con error convergido a en 0.054958621023082174
+error para mae_L1_None 0.21631792393274404con error convergido a en 0.07823214151807416
+error para mae_L1_momentum 0.21807590191545886con error convergido a en 0.0
+error para mae_L1_adagrad 0.0978225448287481con error convergido a en 0.11108137608863229
+error para mae_L1_adadelta 0.09930137016222153con error convergido a en 0.1045017186950578
+error para mae_L1_adam 0.10024024389720174con error convergido a en 0.07588084069072018
+error para mae_L2_None 0.2341907039838981con error convergido a en 0.05262991943175562
+error para mae_L2_momentum 0.24681259077667725con error convergido a en 0.0
+error para mae_L2_adagrad 0.10746819996981857con error convergido a en 0.12340394471266254
+error para mae_L2_adadelta 0.11010981099325026con error convergido a en 0.09077422707234939
+error para mae_L2_adam 0.12450099759201369con error convergido a en 0.06670215136601632
