@@ -33,7 +33,6 @@ class PolynomialFunct:
     for i in range(self.P):
       v_new = (self.alpha * (grads[i]))/math.sqrt(self.prev_adagrad[i]+1e-8)
       self.w[i] = self.w[i] - v_new
-      print(v_new)
     self.prev_adagrad = self.prev_adagrad+grads**2
     return
 
@@ -46,17 +45,19 @@ class PolynomialFunct:
       self.O_adadelta[i] = self.y*self.O_adadelta[i] + (1-self.y)*(v_new**2)
     return
 
-  def __change_params_Adam (self, grads, b1 = 0.9, b2 = 0.999): 
+  def __change_params_Adam (self, grads,i):
+    b1 = 0.9
+    b2 = 0.999 
     self.Adam_m = b1*self.Adam_m + (1-b1)*grads
     self.Adam_v = b2*self.Adam_v + (1-b2)*(grads**2)
-    mt = self.Adam_m/(1-b1)
-    vt = self.Adam_v/(1-b2)
+    mt = self.Adam_m/(1-b1**i)
+    vt = self.Adam_v/(1-b2**i)
     for i in range(self.P):
       v_new = - self.alpha*mt[i]/(math.sqrt(vt[i]) + 1e-8)
       self.w[i] = self.w[i] + v_new
     return
 
-  def change_params(self, grads, opt):
+  def change_params(self, grads, opt,i=0):
     if(opt == None):
       self.__change_params_trad(grads)
     elif(opt == "momentum"):
@@ -66,7 +67,7 @@ class PolynomialFunct:
     elif(opt == "adadelta"):
       self.__change_params_Adadelta(grads)
     elif(opt == "adam"):
-      self.__change_params_Adam(grads)
+      self.__change_params_Adam(grads,i)
     return
 
   def calc_one(self, x): # cambiar a vectorial (?)
@@ -154,39 +155,75 @@ def h(x,w): #creo que esto se reemplazaria en calc_one
 def model_exec(error, function, x_ds, y_ds, iter, reg, opt=None):
   y_pd = function.calc_all(x_ds)
   loss = error.calc_loss(y_ds,y_pd,function.w, reg)
-  i=0
+  i=1
   while(i < iter):
     grads = error.calc_grad(y_ds,x_ds,y_pd,function, reg)
-    function.change_params(grads, opt)
+    function.change_params(grads, opt,i)
     y_pd = function.calc_all(x_ds)
     loss = error.calc_loss(y_ds,y_pd,function.w, reg)
     i+=1
-  print("Loss with", error.errtype,":", loss, "in", i, "iterations in main1")
-  print("W es ", function.w)
-  print("----------------------------")
   return y_pd
+
+
+
+
+def tester(x_ds,y_ds):
+  for i in ["mse","mae"]:
+    error = Error_funct(0.0001, i)
+    for j in [None,"momentum","adadelta","adagrad","adam"]:
+      for k in range(3):
+        sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
+        prediction = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
+        plt.plot(x_ds,y_ds,'*')
+        plt.plot(x_ds,prediction)
+        if (j==None):
+          name ="test/" + i + "_" + str(k) 
+        else:
+          name ="test/" + i + "_" + j + "_" + str(k)
+        plt.savefig(name)
+        plt.clf()
+                
+
+def tester2(x_ds,y_ds):
+  color = { None:"yellow","momentum":"red" ,"adadelta":"blue","adam":"green","adagrad":"purple"}
+  for k in range(3):
+    for i in ["mse","mae"]:
+      error = Error_funct(0.0001, i)
+      plt.plot(x_ds,y_ds,'*')
+      for j in [None,"momentum","adadelta","adagrad","adam"]:
+        sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
+        prediction = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
+        plt.plot(x_ds,prediction, color=color[j])
+      name = "test2/" + i + "_" + str(k)
+      plt.savefig(name)
+      plt.clf()
+
+
 
 if __name__ == "__main__":
   x_ds = np.arange(0,1,0.05)
   real_sine = np.array([ np.sin(2*i*np.pi) for i in x_ds])
   y_ds = np.array([ np.sin(2*i*np.pi) + np.random.normal(0, 0.2) for i in x_ds])
-  sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
-  mse_error = Error_funct(0.0001, "mse")
-  mae_error = Error_funct(0.0001, "mae")
+  tester(x_ds,y_ds)
+  tester2(x_ds,y_ds)
+  
+  #sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
+  #mse_error = Error_funct(0.0001, "mse")
+  #mae_error = Error_funct(0.0001, "mae")
 
   # -----------------------TESTS-------------------------
   #mse_pd = model_exec(mse_error, sine_function, x_ds, y_ds, 10000, 0, "momentum")  #MSE
   #sine_function = PolynomialFunct(4, 0.7, 1, 0.9)
   #mae_pd = model_exec(mae_error, sine_function, x_ds, y_ds, 10000, 0, "momentum")  #MAE
   #sine_function = PolynomialFunct(4, 0.7, 1, 0.9)
-  mae_pd_adagrad = model_exec(mae_error, sine_function, x_ds, y_ds, 10000, 0, "adam")  #MAE
+  #mae_pd_adagrad = model_exec(mae_error, sine_function, x_ds, y_ds, 10000, 0, "adam")  #MAE
   # -----------------------GRAFICOS-------------------------
-  plt.plot(x_ds, y_ds, '*')
+  #plt.plot(x_ds, y_ds, '*')
   #plt.plot(x_ds, real_sine, '*', color='green')
   # plt.plot(x_ds, mse_pd, color='blue')
   # plt.plot(x_ds, mae_pd, color='green')
-  plt.plot(x_ds, mae_pd_adagrad, color='red')
+  #plt.plot(x_ds, mae_pd_adagrad, color='red')
 
-  plt.show()
+  #plt.show()
 
  # https://heartbeat.fritz.ai/5-regression-loss-functions-all-machine-learners-should-know-4fb140e9d4b0
