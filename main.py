@@ -193,8 +193,9 @@ def tester2(x_ds,y_ds):
       for j in [None,"momentum","adadelta","adagrad","adam"]:
         sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
         prediction = model_exec(error, sine_function, x_ds, y_ds, 10000, k, j)
-        plt.plot(x_ds,prediction, color=color[j])
+        plt.plot(x_ds,prediction, color=color[j],label=j)
       name = "test2/" + i + "_" + str(k)
+      plt.legend()
       plt.savefig(name)
       plt.clf()
 
@@ -204,7 +205,7 @@ if __name__ == "__main__":
   x_ds = np.arange(0,1,0.05)
   real_sine = np.array([ np.sin(2*i*np.pi) for i in x_ds])
   y_ds = np.array([ np.sin(2*i*np.pi) + np.random.normal(0, 0.2) for i in x_ds])
-  tester(x_ds,y_ds)
+  #tester(x_ds,y_ds)
   tester2(x_ds,y_ds)
   
   #sine_function = PolynomialFunct(7, 0.7, 1, 0.9)
